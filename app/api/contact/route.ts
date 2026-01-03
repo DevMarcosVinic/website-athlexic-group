@@ -5,12 +5,14 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
 
-        // 1. Server-side Validation (Segurança contra Injection)
+        // 1. Server-side Validation
         const result = ContactFormSchema.safeParse(body);
 
         if (!result.success) {
+            // FIX: Usamos .flatten() para evitar o erro de TypeScript no build
+            // Isso formata o erro de forma mais amigável: { fieldErrors: { ... } }
             return NextResponse.json(
-                { error: 'Dados inválidos', details: result.error.errors },
+                { error: 'Dados inválidos', details: result.error.flatten() },
                 { status: 400 }
             );
         }
@@ -26,9 +28,8 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        // 2. Envio para Webhook com Timeout (Evita que o site trave)
+        // 2. Envio para Webhook com Timeout
         try {
-            // Cria um controller para abortar a requisição se demorar mais de 10s
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10000);
 
@@ -43,7 +44,6 @@ export async function POST(req: NextRequest) {
                     message,
                     timestamp: new Date().toISOString(),
                     source: 'Athexic Group Website',
-                    // Adicione metadados úteis para o CRM
                     userAgent: req.headers.get('user-agent') || 'Unknown'
                 }),
                 signal: controller.signal
@@ -57,10 +57,9 @@ export async function POST(req: NextRequest) {
 
         } catch (webhookError) {
             console.error("Falha ao conectar com automação:", webhookError);
-            // Retornamos erro para o frontend saber que falhou
             return NextResponse.json(
                 { error: 'Não foi possível enviar sua mensagem no momento. Tente pelo WhatsApp.' },
-                { status: 502 } // Bad Gateway
+                { status: 502 }
             );
         }
 
