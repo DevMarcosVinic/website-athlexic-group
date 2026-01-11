@@ -18,6 +18,7 @@ import {
   Zap,
   Activity
 } from "lucide-react";
+import SystemArchitecture from "@/components/sections/SystemArchitecture";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -161,6 +162,54 @@ export default function Home() {
         </div>
       </section>
 
+      {/* System Architecture / How It Works */}
+      <SystemArchitecture />
+
+      {/* System Protocols Section */}
+      <section className="py-24 relative z-10 container mx-auto px-6 border-b border-white/5">
+        <div className="grid md:grid-cols-3 gap-12 text-left">
+          {/* Column 1 */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan to-neon-purple">
+              01. DATA INGESTION
+            </h3>
+            <p className="text-slate-300 font-sans text-sm leading-relaxed">
+              We don't trade in clicks; we trade in Purchase Intent. Our algorithms track behavioral patterns across multiple sources (Google, Meta, LinkedIn) to inject only high-qualification raw data into the system. We eliminate noise before it even enters your pipeline.
+            </p>
+          </div>
+
+          {/* Column 2 */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan to-neon-purple">
+              02. NEURAL TRIAGE
+            </h3>
+            <p className="text-slate-300 font-sans text-sm leading-relaxed">
+              The "Black Box" of efficiency. Our AI Agent processes interactions in real-time, executing the Urgency vs. Curiosity protocol. The system automatically nurtures curiosity and instantly escalates urgent buyers. Human error and response latency are removed from the equation.
+            </p>
+          </div>
+
+          {/* Column 3 */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan to-neon-purple">
+              03. DETERMINISTIC REVENUE
+            </h3>
+            <p className="text-slate-300 font-sans text-sm leading-relaxed">
+              Results shift from gambling to mathematics. We deliver validated leads directly to your calendar. The system learns from every conversion, feeding data back into the ingestion layer to lower your CAC (Customer Acquisition Cost) with every cycle.
+            </p>
+          </div>
+        </div>
+
+        {/* CTA Component */}
+        <div className="mt-16 text-center">
+          <div className="text-[10px] font-mono text-electric-cyan/60 tracking-widest mb-4">
+            DEPLOYMENT STATUS: AVAILABLE IN FULL STACK PLAN ONLY
+          </div>
+          <a href="#contact" className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border border-electric-cyan text-electric-cyan font-bold uppercase tracking-widest hover:bg-electric-cyan hover:text-obsidian transition-all duration-300 group">
+            [ INITIATE INFRASTRUCTURE AUDIT ]
+          </a>
+        </div>
+      </section>
+
       {/* The Process */}
       <section id="process" className="py-32 relative z-10 bg-midnight/30 border-y border-white/5">
         <div className="container mx-auto px-6">
@@ -173,9 +222,9 @@ export default function Home() {
             </div>
 
             {[
-              { icon: Search, title: "Analysis", desc: "System Diagnostic" },
-              { icon: Cpu, title: "Build & Automate", desc: "Core Implementation" },
-              { icon: Rocket, title: "Scale", desc: "Exponential Growth" }
+              { icon: Search, title: "Analysis", sub: "System Diagnostic", desc: "We perform a deep-dive audit of your current digital infrastructure to identify revenue leaks, bottlenecks, and automation opportunities." },
+              { icon: Cpu, title: "Build & Automate", sub: "Core Implementation", desc: "We deploy the custom AI agents, restructure your web architecture for speed, and integrate the CRM tracking layers." },
+              { icon: Rocket, title: "Scale", sub: "Exponential Output", desc: "Once the \"Engine\" is stable, we inject high-volume paid traffic. The system handles the volume increase without breaking, maintaining consistent ROI." }
             ].map((step, i) => (
               <div key={i} className="relative z-10 flex flex-col items-center text-center gap-6 group">
                 <div className="w-16 h-16 rounded-full bg-obsidian border border-electric-cyan/30 flex items-center justify-center group-hover:border-electric-cyan group-hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-500">
@@ -183,7 +232,8 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white uppercase mb-1">{step.title}</h3>
-                  <p className="text-xs font-mono text-electric-cyan">{step.desc}</p>
+                  <p className="text-xs font-mono text-electric-cyan mb-3">{step.sub}</p>
+                  <p className="text-slate-400 text-sm max-w-xs">{step.desc}</p>
                 </div>
               </div>
             ))}
