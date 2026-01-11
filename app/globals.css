@@ -1,16 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-neon-cyan: #00f3ff;
-  --color-electric-purple: #bf00ff;
-  
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --color-obsidian: #050505;
+  --color-midnight: #020B1A;
+  --color-electric-cyan: #00F0FF;
+  --color-neon-purple: #7B2CBF;
+  --color-digital-green: #00FF94;
+
+  --font-sans: var(--font-rajdhani), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 2, 6, 23; /* Slate 950 */
+  --background-start-rgb: 2, 6, 23;
+  /* Slate 950 */
   --background-end-rgb: 2, 6, 23;
 }
 
@@ -19,3 +23,34 @@ body {
   background: rgb(var(--background-start-rgb));
 }
 
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}

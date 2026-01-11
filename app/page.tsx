@@ -1,17 +1,34 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { CheckCircle, Shield, Zap, ArrowRight, Menu, X, ChevronRight } from "lucide-react";
 import { ContactFormSchema, ContactFormData } from "@/schemas/contact";
+import {
+  Brain,
+  Globe,
+  BarChart3,
+  Search,
+  Cpu,
+  Rocket,
+  ArrowRight,
+  CheckCircle,
+  Menu,
+  X,
+  Zap,
+  Activity
+} from "lucide-react";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const {
     register,
@@ -41,202 +58,309 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans text-slate-200">
+    <div className="min-h-screen bg-obsidian text-slate-300 selection:bg-electric-cyan/20 selection:text-electric-cyan font-sans relative overflow-x-hidden">
+
+      {/* Background Ambience */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-0 w-full h-[800px] bg-gradient-to-b from-midnight to-obsidian opacity-50" />
+        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-electric-cyan/5 rounded-full blur-[120px] animate-pulse-slow" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-neon-purple/5 rounded-full blur-[100px]" />
+      </div>
+
+      {/* Grid Overlay */}
+      <div className="fixed inset-0 z-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+
       {/* Header */}
-      <header className="fixed w-full top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+      <header className={`fixed w-full top-0 z-50 transition-all duration-300 border-b ${scrolled ? 'bg-midnight/80 backdrop-blur-xl border-electric-cyan/20' : 'bg-transparent border-transparent'}`}>
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-neon-cyan to-electric-purple rounded-lg animate-pulse" />
-            <span className="text-xl font-bold tracking-tight text-white font-display">ATHEXIC GROUP</span>
+          <div className="flex items-center gap-3 group cursor-pointer">
+            <div className="relative w-10 h-10 flex items-center justify-center bg-transparent border border-electric-cyan/30 rounded-lg overflow-hidden group-hover:border-electric-cyan transition-all">
+              <div className="absolute inset-0 bg-electric-cyan/10 group-hover:bg-electric-cyan/20 transition-all" />
+              <Zap className="w-5 h-5 text-electric-cyan" />
+            </div>
+            <span className="text-xl font-bold tracking-widest text-white uppercase font-sans">Athlexic<span className="text-electric-cyan">Group</span></span>
           </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-8 text-sm font-medium">
-            <Link href="#servicos" className="hover:text-neon-cyan transition-colors">Serviços</Link>
-            <Link href="#diferenciais" className="hover:text-neon-cyan transition-colors">Diferenciais</Link>
-            <Link href="#contato" className="hover:text-neon-cyan transition-colors">Contato</Link>
+          <nav className="hidden md:flex gap-8 text-sm font-medium tracking-wide font-mono">
+            {['Services', 'Process', 'Results'].map((item) => (
+              <a key={item} href={`#${item.toLowerCase()}`} className="text-slate-400 hover:text-electric-cyan transition-colors uppercase text-xs">
+                // {item}
+              </a>
+            ))}
           </nav>
 
-          <div className="hidden md:block">
-            <Link
-              href="#contato"
-              className="px-6 py-2.5 bg-white text-slate-950 font-semibold rounded-full hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300"
-            >
-              Falar com Especialista
-            </Link>
-          </div>
+          <a href="#contact" className="hidden md:flex items-center gap-2 px-6 py-2 bg-electric-cyan/10 border border-electric-cyan/50 hover:bg-electric-cyan/20 hover:border-electric-cyan text-electric-cyan text-xs font-bold tracking-widest uppercase transition-all duration-300 group rounded-sm">
+            Start Automation
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </a>
 
-          {/* Mobile Menu Toggle */}
-          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
-
-        {/* Mobile Nav */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-slate-950 border-b border-slate-800 p-6 flex flex-col gap-4">
-            <Link href="#servicos" onClick={() => setIsMenuOpen(false)}>Serviços</Link>
-            <Link href="#diferenciais" onClick={() => setIsMenuOpen(false)}>Diferenciais</Link>
-            <Link href="#contato" onClick={() => setIsMenuOpen(false)}>Contato</Link>
-          </div>
-        )}
       </header>
 
-      <main className="flex-grow pt-20">
-        {/* Hero Section */}
-        <section className="relative py-20 lg:py-32 overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-neon-cyan/20 rounded-full blur-[120px] -z-10" />
+      {/* Hero Section */}
+      <section className="relative pt-40 pb-32 lg:pt-60 lg:pb-40 px-6 z-10 flex flex-col items-center justify-center text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-midnight border border-electric-cyan/20 text-electric-cyan text-xs font-mono mb-8 animate-fade-in-up">
+          <span className="w-2 h-2 rounded-full bg-electric-cyan animate-pulse" />
+          SYSTEM: OPTIMIZATION INITIALIZED...
+        </div>
 
-          <div className="container mx-auto px-6 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-xs font-semibold tracking-wider text-neon-cyan mb-8">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-cyan"></span>
-              </span>
-              TRANSFORMAÇÃO DIGITAL POWERED BY AI
+        <h1 className="text-5xl lg:text-7xl font-bold text-white mb-8 leading-tight tracking-tight max-w-5xl mx-auto uppercase">
+          Scaling Businesses with <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan via-white to-neon-purple drop-shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+            Artificial Intelligence
+          </span>
+        </h1>
+
+        <p className="text-slate-400 font-mono text-sm lg:text-base max-w-2xl mx-auto mb-12">
+          &gt; Web Design. Traffic Systems. Custom AI Automations.
+          <br />
+          We build digital infrastructures that scale revenue autonomously.
+        </p>
+
+        <a href="#contact" className="px-10 py-5 bg-electric-cyan text-obsidian font-bold uppercase tracking-widest hover:bg-white hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] transition-all duration-300 skew-x-[-10deg] group border border-electric-cyan">
+          <span className="skew-x-[10deg] inline-block">Execute Growth Protocol</span>
+        </a>
+      </section>
+
+      {/* The Triad (Services) */}
+      <section id="services" className="py-24 relative z-10 container mx-auto px-6">
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              title: "AI Automation",
+              icon: Brain,
+              desc: "Eliminate inefficiencies. Chatbots, CRM integration, and workflow automation.",
+              color: "text-electric-cyan"
+            },
+            {
+              title: "High-Performance Web",
+              icon: Globe,
+              desc: "Conversion-first architecture. Blazing fast, SEO-optimized digital headquarters.",
+              color: "text-neon-purple"
+            },
+            {
+              title: "Paid Traffic Algorithms",
+              icon: BarChart3,
+              desc: "Data-driven ad campaigns. We turn clicks into revenue using predictive targeting.",
+              color: "text-digital-green"
+            }
+          ].map((service, i) => (
+            <div key={i} className="group p-8 bg-midnight/40 backdrop-blur-sm border border-white/5 hover:border-electric-cyan/50 hover:bg-midnight/60 transition-all duration-500 rounded-xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-electric-cyan/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <service.icon className={`w-12 h-12 ${service.color} mb-6 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]`} />
+              <h3 className="text-2xl font-bold text-white mb-4 uppercase">{service.title}</h3>
+              <p className="text-slate-400 font-mono text-sm leading-relaxed">{service.desc}</p>
+              <div className="absolute bottom-4 right-4 text-[10px] text-slate-700 font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+                SYS_ID_0{i + 1}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* The Process */}
+      <section id="process" className="py-32 relative z-10 bg-midnight/30 border-y border-white/5">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-white mb-20 text-center uppercase tracking-widest"><span className="text-electric-cyan">/</span> Operation Sequence</h2>
+
+          <div className="relative flex flex-col md:flex-row justify-between items-center gap-12 md:gap-4">
+            {/* Connecting Line */}
+            <div className="hidden md:block absolute top-[28px] left-0 w-full h-[2px] bg-white/10">
+              <div className="absolute top-0 left-0 h-full w-1/3 bg-electric-cyan shadow-[0_0_10px_#00F0FF] animate-pulse" />
             </div>
 
-            <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-tight font-display">
-              Eleve seu Negócio com <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-electric-purple">Design & Inteligência Artificial</span>
-            </h1>
-
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-              Criamos ecossistemas digitais de alta performance. Sites que convertem e automações que escalam sua operação enquanto você dorme.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="#contato"
-                className="px-8 py-4 bg-white text-slate-950 font-bold rounded-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all flex items-center justify-center gap-2 group"
-              >
-                Inicar Projeto
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="#servicos"
-                className="px-8 py-4 bg-slate-900 text-white font-bold rounded-lg border border-slate-800 hover:border-slate-700 transition-all flex items-center justify-center"
-              >
-                Conhecer Soluções
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Services Section */}
-        <section id="servicos" className="py-20 lg:py-32 bg-slate-950/50">
-          <div className="container mx-auto px-6">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-16 text-center">O Futuro da Sua Empresa <br /> Começa Aqui</h2>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { title: "Web Design de Alta Performance", desc: "Interfaces imersivas focadas em UX e conversão. Carregamento instantâneo e SEO técnico avançado.", icon: Zap },
-                { title: "Automação com IA", desc: "Chatbots inteligentes, triagem de leads automática e fluxos de trabalho que eliminam tarefas repetitivas.", icon: ChevronRight }, // Using chevron as placeholder for automation if needed or just generic
-                { title: "Segurança Ofensiva (AppSec)", desc: "Proteção de nível militar para seus dados e clientes. Testes rigorosos e monitoramento constante.", icon: Shield },
-              ].map((service, i) => (
-                <div key={i} className="group p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-neon-cyan/50 hover:bg-slate-900/80 transition-all duration-500 relative overflow-hidden">
-                  <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan to-electric-purple transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500`} />
-                  <service.icon className="w-12 h-12 text-neon-cyan mb-6 group-hover:text-white transition-colors" />
-                  <h3 className="text-xl font-bold text-white mb-4">{service.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">{service.desc}</p>
+            {[
+              { icon: Search, title: "Analysis", desc: "System Diagnostic" },
+              { icon: Cpu, title: "Build & Automate", desc: "Core Implementation" },
+              { icon: Rocket, title: "Scale", desc: "Exponential Growth" }
+            ].map((step, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center text-center gap-6 group">
+                <div className="w-16 h-16 rounded-full bg-obsidian border border-electric-cyan/30 flex items-center justify-center group-hover:border-electric-cyan group-hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-500">
+                  <step.icon className="w-8 h-8 text-white" />
                 </div>
-              ))}
+                <div>
+                  <h3 className="text-xl font-bold text-white uppercase mb-1">{step.title}</h3>
+                  <p className="text-xs font-mono text-electric-cyan">{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Results / Dashboard */}
+      <section id="results" className="py-32 container mx-auto px-6 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-16">
+          <div className="lg:w-1/2">
+            <div className="inline-block px-3 py-1 border border-digital-green/30 rounded text-[10px] font-mono text-digital-green mb-6">
+              PERFORMANCE METRICS
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 uppercase leading-tight">
+              Engineering <br /> <span className="text-digital-green">Results</span>
+            </h2>
+            <p className="text-slate-400 mb-8 max-w-md">
+              We don't just clear errors. We recompile your business logic for maximum efficiency and throughput.
+            </p>
+            <div className="flex gap-4">
+              <div className="text-3xl font-bold text-white border-l-2 border-digital-green pl-4">
+                +300% <span className="block text-xs font-mono text-slate-500 font-normal mt-1">LEADS GENERATED</span>
+              </div>
+              <div className="text-3xl font-bold text-white border-l-2 border-digital-green pl-4">
+                20h <span className="block text-xs font-mono text-slate-500 font-normal mt-1">SAVED / WEEK</span>
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* Contact Section */}
-        <section id="contato" className="py-20 lg:py-32 relative">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 p-8 lg:p-12 rounded-3xl relative overflow-hidden">
-              <div className="absolute -top-24 -right-24 w-64 h-64 bg-electric-purple/20 rounded-full blur-[80px]" />
-
-              <div className="relative z-10 text-center mb-12">
-                <h2 className="text-3xl font-bold text-white mb-4">Vamos Escalar seu Negócio?</h2>
-                <p className="text-slate-400">Preencha o formulário abaixo e nossa equipe entrará em contato em até 24h.</p>
+          <div className="lg:w-1/2 w-full">
+            <div className="relative bg-obsidian border border-white/10 rounded-xl p-6 shadow-2xl overflow-hidden">
+              {/* Dashboard Header */}
+              <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-4">
+                <div className="text-xs font-mono text-slate-500">DASHBOARD_VIEW_V3.1</div>
+                <div className="flex gap-2">
+                  <div className="w-2 h-2 rounded-full bg-red-500" />
+                  <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                  <div className="w-2 h-2 rounded-full bg-digital-green" />
+                </div>
               </div>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 relative z-10">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Nome Completo</label>
+              {/* Dashboard Content */}
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-midnight/50 p-4 rounded border border-white/5">
+                  <div className="text-[10px] font-mono text-slate-500 mb-2">TOTAL REVENUE</div>
+                  <div className="text-2xl text-digital-green font-mono font-bold">$124,500</div>
+                  <div className="w-full bg-white/5 h-1 mt-3 overflow-hidden rounded-full">
+                    <div className="h-full bg-digital-green w-[75%] shadow-[0_0_10px_#00FF94]" />
+                  </div>
+                </div>
+                <div className="bg-midnight/50 p-4 rounded border border-white/5">
+                  <div className="text-[10px] font-mono text-slate-500 mb-2">CONVERSION RATE</div>
+                  <div className="text-2xl text-electric-cyan font-mono font-bold">4.8%</div>
+                  <div className="w-full bg-white/5 h-1 mt-3 overflow-hidden rounded-full">
+                    <div className="h-full bg-electric-cyan w-[60%]" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Graph Simulation */}
+              <div className="h-32 bg-midnight/30 rounded border border-white/5 flex items-end justify-between px-2 pb-2 gap-1">
+                {[40, 65, 50, 80, 75, 90, 100].map((h, i) => (
+                  <div key={i} style={{ height: `${h}%` }} className="w-full bg-digital-green/20 border-t-2 border-digital-green relative group">
+                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition-opacity bg-black px-1 rounded">
+                      {h}%
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer / Contact */}
+      <footer id="contact" className="py-20 border-t border-white/10 bg-black relative">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="flex flex-col md:flex-row gap-16">
+            <div className="md:w-1/3">
+              <h2 className="text-3xl font-bold text-white mb-6 uppercase">Upgrade Your <br /> Business</h2>
+              <p className="text-slate-500 mb-8 font-mono text-sm">
+                Ready to deploy? Initialize communication protocol below.
+              </p>
+              <div className="flex gap-4">
+                {[
+                  { label: "LINKEDIN", href: "#" },
+                  { label: "INSTAGRAM", href: "#" },
+                  { label: "WHATSAPP", href: "#" },
+                ].map((social) => (
+                  <a key={social.label} href={social.href} className="text-[10px] font-bold text-electric-cyan border border-electric-cyan/30 px-3 py-1 hover:bg-electric-cyan hover:text-black transition-colors">
+                    {social.label}
+                  </a>
+                ))}
+              </div>
+              <div className="mt-12 text-[10px] text-slate-700 font-mono">
+                &copy; {new Date().getFullYear()} ATHEXIC GROUP.
+                <br />SYSTEM STATUS: ONLINE
+              </div>
+            </div>
+
+            <div className="md:w-2/3">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono text-electric-cyan uppercase">Identifier // Name</label>
                     <input
                       {...register("name")}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-white focus:ring-2 focus:ring-neon-cyan/50 focus:border-neon-cyan transition-all outline-none"
-                      placeholder="Seu nome"
+                      className="w-full bg-midnight/50 border border-white/10 p-3 text-white focus:border-electric-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.1)] outline-none transition-all placeholder:text-slate-700 font-mono text-sm"
+                      placeholder="John Doe"
                     />
-                    {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
+                    {errors.name && <p className="text-red-500 text-[10px] font-mono mt-1">&gt; ERROR: {errors.name.message}</p>}
                   </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Email Corporativo</label>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono text-electric-cyan uppercase">Contact // Email</label>
                     <input
                       {...register("email")}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-white focus:ring-2 focus:ring-neon-cyan/50 focus:border-neon-cyan transition-all outline-none"
-                      placeholder="seu@email.com"
+                      className="w-full bg-midnight/50 border border-white/10 p-3 text-white focus:border-electric-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.1)] outline-none transition-all placeholder:text-slate-700 font-mono text-sm"
+                      placeholder="corp@email.com"
                     />
-                    {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
+                    {errors.email && <p className="text-red-500 text-[10px] font-mono mt-1">&gt; ERROR: {errors.email.message}</p>}
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">WhatsApp</label>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono text-electric-cyan uppercase">Comms // WhatsApp</label>
                     <input
                       {...register("whatsapp")}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-white focus:ring-2 focus:ring-neon-cyan/50 focus:border-neon-cyan transition-all outline-none"
-                      placeholder="(11) 99999-9999"
+                      className="w-full bg-midnight/50 border border-white/10 p-3 text-white focus:border-electric-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.1)] outline-none transition-all placeholder:text-slate-700 font-mono text-sm"
+                      placeholder="+1 (555) 000-0000"
                     />
-                    {errors.whatsapp && <p className="text-red-500 text-xs">{errors.whatsapp.message}</p>}
+                    {errors.whatsapp && <p className="text-red-500 text-[10px] font-mono mt-1">&gt; ERROR: {errors.whatsapp.message}</p>}
                   </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Empresa (Opcional)</label>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono text-electric-cyan uppercase">Entity // Company</label>
                     <input
                       {...register("company")}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-white focus:ring-2 focus:ring-neon-cyan/50 focus:border-neon-cyan transition-all outline-none"
-                      placeholder="Nome da sua empresa"
+                      className="w-full bg-midnight/50 border border-white/10 p-3 text-white focus:border-electric-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.1)] outline-none transition-all placeholder:text-slate-700 font-mono text-sm"
+                      placeholder="Corp Name"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Como podemos ajudar?</label>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-mono text-electric-cyan uppercase">Mission // Message</label>
                   <textarea
                     {...register("message")}
                     rows={4}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-white focus:ring-2 focus:ring-neon-cyan/50 focus:border-neon-cyan transition-all outline-none resize-none"
-                    placeholder="Descreva seu projeto ou necessidade..."
+                    className="w-full bg-midnight/50 border border-white/10 p-3 text-white focus:border-electric-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.1)] outline-none transition-all placeholder:text-slate-700 font-mono text-sm resize-none"
+                    placeholder="Describe your objectives..."
                   />
-                  {errors.message && <p className="text-red-500 text-xs">{errors.message.message}</p>}
+                  {errors.message && <p className="text-red-500 text-[10px] font-mono mt-1">&gt; ERROR: {errors.message.message}</p>}
                 </div>
 
                 <button
                   disabled={formStatus === 'submitting' || formStatus === 'success'}
-                  className="w-full py-4 bg-gradient-to-r from-neon-cyan to-electric-purple text-white font-bold rounded-lg hover:shadow-[0_0_20px_rgba(191,0,255,0.4)] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-white text-black font-bold uppercase tracking-widest hover:bg-electric-cyan transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 >
-                  {formStatus === 'submitting' ? 'Enviando...' : formStatus === 'success' ? 'Enviado com Sucesso!' : 'Solicitar Consultoria'}
+                  {formStatus === 'submitting' ? 'TRANSMITTING...' : formStatus === 'success' ? 'TRANSMISSION RECEIVED' : 'INITIATE CONTACT'}
                 </button>
 
                 {formStatus === 'success' && (
-                  <div className="p-4 bg-green-900/20 border border-green-500/30 rounded-lg flex items-center gap-2 text-green-400">
-                    <CheckCircle className="w-5 h-5" />
-                    <p>Recebemos sua mensagem! Entraremos em contato em breve.</p>
+                  <div className="p-3 border border-digital-green/30 bg-digital-green/10 text-digital-green text-xs font-mono flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4" />
+                    <span>&gt; DATA RECEIVED SUCCESSFULLY. STANDBY FOR RESPONSE.</span>
                   </div>
                 )}
                 {formStatus === 'error' && (
-                  <div className="p-4 bg-red-900/20 border border-red-500/30 rounded-lg text-red-400 text-center">
-                    <p>Erro ao enviar. Por favor, tente novamente ou contate via WhatsApp.</p>
+                  <div className="p-3 border border-red-500/30 bg-red-500/10 text-red-500 text-xs font-mono">
+                    <span>&gt; FATAL ERROR. TRANSMISSION FAILED.</span>
                   </div>
                 )}
               </form>
             </div>
           </div>
-        </section>
-      </main>
-
-      <footer className="py-8 bg-slate-950 border-t border-slate-900 text-center text-slate-600">
-        <p>&copy; {new Date().getFullYear()} Athexic Group. Todos os direitos reservados.</p>
+        </div>
       </footer>
     </div>
   );

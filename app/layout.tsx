@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google"; // Using Google Fonts
+import { Rajdhani, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
+const rajdhani = Rajdhani({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-rajdhani"
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono"
+});
 
 export const metadata: Metadata = {
   title: "Athexic Group | High-Performance Web Design & AI Automation",
@@ -29,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <body className="bg-slate-950 text-white antialiased">
+    <html lang="pt-BR" className={`${rajdhani.variable} ${jetbrainsMono.variable}`}>
+      <body className="bg-[#050505] text-slate-200 antialiased selection:bg-cyan-500/30 selection:text-cyan-100">
         {children}
       </body>
     </html>
