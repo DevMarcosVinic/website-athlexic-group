@@ -320,11 +320,25 @@ export default function Home() {
               </p>
               <div className="flex gap-4">
                 {[
-                  { label: "LINKEDIN", href: "#" },
-                  { label: "INSTAGRAM", href: "#" },
-                  { label: "WHATSAPP", href: "#" },
+                  { label: "LINKEDIN", href: "#", target: "_self" },
+                  {
+                    label: "INSTAGRAM",
+                    href: "https://www.instagram.com/athlexic.ai/?utm_source=website&utm_medium=footer_icon&utm_campaign=organic_traffic",
+                    target: "_blank"
+                  },
+                  {
+                    label: "WHATSAPP",
+                    href: "https://wa.me/556294326282?text=Hello%20Athlexic,%20I%20want%20to%20upgrade%20my%20business.%20(Source:%20Website)",
+                    target: "_blank"
+                  },
                 ].map((social) => (
-                  <a key={social.label} href={social.href} className="text-[10px] font-bold text-electric-cyan border border-electric-cyan/30 px-3 py-1 hover:bg-electric-cyan hover:text-black transition-colors">
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target={social.target}
+                    rel={social.target === "_blank" ? "noopener noreferrer" : undefined}
+                    className="text-[10px] font-bold text-electric-cyan border border-electric-cyan/30 px-3 py-1 hover:bg-electric-cyan hover:text-black transition-colors"
+                  >
                     {social.label}
                   </a>
                 ))}
