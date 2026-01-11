@@ -29,6 +29,11 @@ export const metadata: Metadata = {
     title: "Athexic Group | High-Performance Web Design & AI Automation",
     description: "Transforming businesses with futuristic Web Design and Intelligent Automation.",
   },
+  icons: {
+    icon: "/icon.png", // fallback to public if app/icon is processed
+    shortcut: "/logo-symbol.png",
+    apple: "/logo-symbol.png",
+  },
 };
 
 export default function RootLayout({

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Orbitron', sans-serif; /* Fallback for Monument Extended */
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 16px; /* Space between icon and text */
+            padding: 20px;
+            /* box-sizing: border-box; */
+        }
+
+        .logo-symbol {
+            width: 64px; /* Icon size */
+            height: 64px;
+            object-fit: contain;
+            /* Remove background if the png has one, but we generated with black background which matches body */
+        }
+
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .logo-main {
+            color: #FFFFFF;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 0.05em; /* Wide */
+            text-transform: uppercase;
+        }
+
+        .logo-sub {
+            color: #888888;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.4em; /* Widely spaced */
+            text-transform: uppercase;
+            margin-top: 4px;
+            margin-left: 2px; /* Visual alignment */
+            font-family: 'Montserrat', sans-serif; /* Cleaner for small text */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container for screenshot -->
+    <div class="logo-container" id="logo">
+        <img src="logo-symbol.png" alt="Apex Node" class="logo-symbol">
+        <div class="logo-text-group">
+            <div class="logo-main">ATHLEXIC</div>
+            <div class="logo-sub">GROUP</div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -15,9 +15,9 @@ import {
   CheckCircle,
   Menu,
   X,
-  Zap,
   Activity
 } from "lucide-react";
+import Image from "next/image";
 import SystemArchitecture from "@/components/sections/SystemArchitecture";
 
 export default function Home() {
@@ -74,18 +74,25 @@ export default function Home() {
       {/* Header */}
       <header className={`fixed w-full top-0 z-50 transition-all duration-300 border-b ${scrolled ? 'bg-midnight/80 backdrop-blur-xl border-electric-cyan/20' : 'bg-transparent border-transparent'}`}>
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3 group cursor-pointer">
-            <div className="relative w-10 h-10 flex items-center justify-center bg-transparent border border-electric-cyan/30 rounded-lg overflow-hidden group-hover:border-electric-cyan transition-all">
-              <div className="absolute inset-0 bg-electric-cyan/10 group-hover:bg-electric-cyan/20 transition-all" />
-              <Zap className="w-5 h-5 text-electric-cyan" />
-            </div>
-            <span className="text-xl font-bold tracking-widest text-white uppercase font-sans">Athlexic<span className="text-electric-cyan">Group</span></span>
+          <div className="flex items-center gap-3 group cursor-pointer py-2">
+            <Image
+              src="/logo-full-removebg.png"
+              alt="Athlexic Group"
+              width={200}
+              height={50}
+              className="h-10 w-auto object-contain"
+              priority
+            />
           </div>
 
           <nav className="hidden md:flex gap-8 text-sm font-medium tracking-wide font-mono">
-            {['Services', 'Process', 'Results'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="text-slate-400 hover:text-electric-cyan transition-colors uppercase text-xs">
-                // {item}
+            {[
+              { label: 'Services', href: '#services' },
+              { label: 'Process', href: '#neural-engine' }, // Updated Link
+              { label: 'Results', href: '#results' }
+            ].map((item) => (
+              <a key={item.label} href={item.href} className="text-slate-400 hover:text-electric-cyan transition-colors uppercase text-xs">
+                // {item.label}
               </a>
             ))}
           </nav>
@@ -99,6 +106,27 @@ export default function Home() {
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-20 left-0 w-full bg-midnight/95 backdrop-blur-xl border-b border-white/10 p-6 flex flex-col gap-6 animate-fade-in-down z-40">
+            {[
+              { label: 'Services', href: '#services' },
+              { label: 'Process', href: '#neural-engine' },
+              { label: 'Results', href: '#results' },
+              { label: 'Start Automation', href: '#contact' }
+            ].map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-white font-bold uppercase tracking-widest text-sm hover:text-electric-cyan transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
