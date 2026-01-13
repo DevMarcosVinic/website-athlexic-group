@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Rajdhani, JetBrains_Mono } from "next/font/google";
+import { Rajdhani, JetBrains_Mono, Space_Grotesk } from "next/font/google"; // Added Space_Grotesk
+import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
 const rajdhani = Rajdhani({
@@ -11,6 +12,11 @@ const rajdhani = Rajdhani({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono"
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk"
 });
 
 export const metadata: Metadata = {
@@ -45,6 +51,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${rajdhani.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-[#050505] text-slate-200 antialiased selection:bg-cyan-500/30 selection:text-cyan-100">
         {children}
+        <CookieConsent />
       </body>
     </html>
   );
