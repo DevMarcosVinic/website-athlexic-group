@@ -47,7 +47,6 @@ export default function Footer() {
                         </p>
                         <div className="flex gap-4">
                             {[
-                                { label: "LINKEDIN", href: "#", target: "_self" },
                                 {
                                     label: "INSTAGRAM",
                                     href: "https://www.instagram.com/athlexic.ai/?utm_source=website&utm_medium=footer_icon&utm_campaign=organic_traffic",
